@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables for Light Mode */
+:root {
+  --bg-main: #FFFFFF;
+  --bg-subtle: #FAFAFA;
+  --bg-card: #FBF2F4;
+  --accent: #BE3E6B;
+  --text-primary: #18121E;
+  --border-color: #FAFAFA;
+}
+
+/* CSS Variables for Dark Mode */
+.dark {
+  --bg-main: #0D0A10;
+  --bg-subtle: #18121E;
+  --bg-card: #261824;
+  --accent: #E56B93;
+  --text-primary: #FBF2F4;
+  --border-color: #18121E;
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto max-w-7xl px-6 lg:px-8;
+  }
+
+  .fade-up {
+    @apply opacity-0 translate-y-8;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
+}
