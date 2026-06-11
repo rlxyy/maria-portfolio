@@ -9,15 +9,15 @@
       <div
         v-for="cert in certifications"
         :key="cert.name"
-        class="fade-up"
-        @dblclick="expandImage(cert)"
+        class="group fade-up"
       >
-        <!-- Normal state (text) -->
         <GlassCard 
           class="relative min-h-[280px] cursor-pointer transition-all duration-300 hover:scale-105 hover:border-accent-primary/50 hover:shadow-xl hover:shadow-accent-primary/10"
-          @mouseenter="hoveredCert = cert.name"
-          @mouseleave="hoveredCert = null"
+          @mouseenter="showPreview(cert)"
+          @mouseleave="hidePreview"
+          @dblclick="expandImage(cert)"
         >
+          <!-- Normal state -->
           <div class="flex flex-col items-start justify-between h-full">
             <ShieldCheckIcon class="h-8 w-8 text-accent-primary" aria-hidden="true" />
             <div>
@@ -26,41 +26,43 @@
             </div>
           </div>
         </GlassCard>
-
-        <!-- Hover state (certificate image) -->
-        <div 
-          v-if="hoveredCert === cert.name"
-          class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md transition-all duration-300"
-          @click="hoveredCert = null"
-        >
-          <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
-            <img
-              :src="cert.image"
-              :alt="cert.name"
-              class="max-h-[85vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl"
-            />
-            <button
-              @click="hoveredCert = null"
-              class="absolute -top-12 right-0 rounded-full bg-red-500/20 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
-            >
-              <XMarkIcon class="h-6 w-6" />
-            </button>
-            <div class="absolute -bottom-12 left-0 text-white text-sm bg-black/50 px-3 py-1 rounded-lg">
-              {{ cert.name }} • {{ cert.year }}
-            </div>
-            <p class="absolute top-4 right-4 text-white text-xs bg-black/50 px-2 py-1 rounded">
-              ✨ Double click to expand fullscreen ✨
-            </p>
-          </div>
-        </div>
       </div>
     </div>
 
-    <!-- Fullscreen expanded view (double click) -->
+    <!-- Hover Preview Modal -->
+    <Teleport to="body">
+      <div
+        v-if="previewCert"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md transition-all duration-300"
+        @click="previewCert = null"
+      >
+        <div class="relative max-h-[85vh] max-w-[85vw]" @click.stop>
+          <img
+            :src="previewCert.image"
+            :alt="previewCert.name"
+            class="max-h-[80vh] max-w-[80vw] object-contain rounded-2xl shadow-2xl"
+          />
+          <button
+            @click="previewCert = null"
+            class="absolute -top-12 right-0 rounded-full bg-red-500/20 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
+          >
+            ✕
+          </button>
+          <div class="absolute -bottom-12 left-0 text-white text-sm bg-black/50 px-3 py-1 rounded-lg">
+            {{ previewCert.name }} • {{ previewCert.year }}
+          </div>
+          <p class="absolute top-4 right-4 text-white text-xs bg-black/50 px-2 py-1 rounded">
+            Double click to expand
+          </p>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- Fullscreen Expand -->
     <Teleport to="body">
       <div
         v-if="expandedCert"
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md transition-all duration-300"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md"
         @click="expandedCert = null"
       >
         <div class="relative max-h-[95vh] max-w-[95vw]" @click.stop>
@@ -73,7 +75,7 @@
             @click="expandedCert = null"
             class="absolute -top-12 right-0 rounded-full bg-red-500/20 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
           >
-            <XMarkIcon class="h-6 w-6" />
+            ✕
           </button>
           <div class="absolute -bottom-12 left-0 text-white text-sm bg-black/50 px-3 py-1 rounded-lg">
             {{ expandedCert.name }} • {{ expandedCert.year }}
@@ -87,9 +89,9 @@
 <script setup>
 import { ref } from 'vue'
 import GlassCard from './GlassCard.vue'
-import { ShieldCheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { ShieldCheckIcon } from '@heroicons/vue/24/outline'
 
-const hoveredCert = ref(null)
+const previewCert = ref(null)
 const expandedCert = ref(null)
 
 const certifications = ref([
@@ -125,7 +127,16 @@ const certifications = ref([
   }
 ])
 
+const showPreview = (cert) => {
+  previewCert.value = cert
+}
+
+const hidePreview = () => {
+  previewCert.value = null
+}
+
 const expandImage = (cert) => {
+  previewCert.value = null
   expandedCert.value = cert
 }
 </script>
