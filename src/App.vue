@@ -59,6 +59,9 @@ gsap.registerPlugin(ScrollTrigger)
 const sparkles = ref([])
 let animationFrame
 
+// Disable right-click context menu
+const disableContextMenu = (e) => e.preventDefault()
+
 // Colors na KITA sa BOTH light at dark mode
 const getSparkleColor = (isDark) => {
   if (isDark) {
@@ -190,6 +193,9 @@ onMounted(() => {
   sparkles.value = generateSparkles()
   animateSparkles()
   
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', disableContextMenu)
+  
   // Watch for theme changes
   const observer = new MutationObserver(() => {
     refreshSparkles()
@@ -213,6 +219,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   if (animationFrame) cancelAnimationFrame(animationFrame)
+  document.removeEventListener('contextmenu', disableContextMenu)
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
 })
 </script>
