@@ -1,18 +1,18 @@
 <template>
-  <header class="fixed top-0 z-30 w-full border-b border-gray-200 bg-white/95 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/95">
-    <nav class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-      <a href="#" class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
-        <SparklesIcon class="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+  <header class="fixed top-0 z-30 w-full border-b border-border-color bg-bg-main/95 backdrop-blur-md">
+    <nav class="section-shell flex min-h-16 items-center justify-between gap-4">
+      <a href="#" class="flex items-center gap-2 text-sm font-semibold text-text-primary">
+        <SparklesIcon class="h-5 w-5 text-accent" aria-hidden="true" />
         rlxy
       </a>
       
       <div class="flex items-center gap-6">
-        <div class="hidden items-center gap-6 text-sm sm:flex">
+        <div class="hidden items-center gap-6 text-sm text-text-primary/70 sm:flex">
           <a
             v-for="item in navItems"
             :key="item.href"
             :href="item.href"
-            class="nav-link relative transition-all duration-200"
+            class="nav-link"
             :class="{ 'active': activeSection === item.label.toLowerCase() }"
             @click.prevent="scrollToSection(item.href)"
           >
@@ -22,11 +22,11 @@
         
         <button
           @click="toggleTheme"
-          class="rounded-full p-2 transition-all duration-300 hover:scale-110 hover:bg-blue-600/20 hover:ring-2 hover:ring-blue-600/40"
+          class="rounded-full p-2 transition-all duration-300 hover:scale-110 hover:bg-accent/20 hover:ring-2 hover:ring-accent/40"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
         >
-          <SunIcon v-if="isDark" class="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          <MoonIcon v-else class="h-5 w-5 text-gray-900 dark:text-white" />
+          <SunIcon v-if="isDark" class="h-5 w-5 text-accent" />
+          <MoonIcon v-else class="h-5 w-5 text-text-primary" />
         </button>
       </div>
     </nav>
@@ -90,15 +90,25 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* ========== NO @apply, pure CSS ========== */
 .nav-link {
-  @apply text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400;
+  color: rgba(var(--text-primary-rgb, 0, 0, 0), 0.7);
   padding-bottom: 4px;
+  position: relative;
+  transition: color 0.2s ease;
+  text-decoration: none;
 }
 
+.nav-link:hover {
+  color: var(--accent, #ec4899);
+}
+
+/* Active link - pink */
 .nav-link.active {
-  @apply text-blue-600 dark:text-blue-400;
+  color: var(--accent, #ec4899);
 }
 
+/* Bottom border indicator - PINK */
 .nav-link.active::after {
   content: '';
   position: absolute;
@@ -106,11 +116,12 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: currentColor;
+  background-color: var(--accent, #ec4899);
   border-radius: 2px;
   animation: slideIn 0.2s ease-out;
 }
 
+/* Hover effect - PINK */
 .nav-link::before {
   content: '';
   position: absolute;
@@ -118,9 +129,10 @@ onUnmounted(() => {
   left: 0;
   width: 0;
   height: 2px;
-  background-color: currentColor;
+  background-color: var(--accent, #ec4899);
   border-radius: 2px;
   transition: width 0.2s ease-out;
+  opacity: 0.5;
 }
 
 .nav-link:hover::before {
