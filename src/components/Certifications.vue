@@ -1,3 +1,6 @@
+ito yung code ko sa certifications.vue 
+
+
 <template>
   <section id="certifications" class="section-shell py-12 scroll-mt-20">
     <div class="fade-up mb-8">
@@ -27,20 +30,3 @@ const certifications = [
   ['Intro to Cybersecurity - Cisco', '2025'],
 ]
 </script>
-
-<style scoped>
-.fade-up {
-  animation: fadeUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>
