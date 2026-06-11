@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen overflow-hidden bg-bg-main text-text-primary">
+  <div class="relative min-h-screen overflow-hidden bg-bg-main text-text-primary select-none">
     <!-- Sparkle Background -->
     <div 
       class="pointer-events-none fixed inset-0 z-0 overflow-hidden" 
@@ -61,6 +61,39 @@ let animationFrame
 
 // Disable right-click context menu
 const disableContextMenu = (e) => e.preventDefault()
+
+// Disable text selection via mouse
+const disableSelection = (e) => e.preventDefault()
+
+// Disable common copy/save/print/devtools shortcuts
+const disableShortcuts = (e) => {
+  const key = e.key.toLowerCase()
+
+  // F12 - DevTools
+  if (e.key === 'F12') {
+    e.preventDefault()
+    return
+  }
+
+  // Ctrl/Cmd combos: C, X, U, S, P, A
+  if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'u', 's', 'p', 'a'].includes(key)) {
+    e.preventDefault()
+    return
+  }
+
+  // Ctrl+Shift+I / J / C - DevTools
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(key)) {
+    e.preventDefault()
+    return
+  }
+
+  // PrintScreen
+  if (e.key === 'PrintScreen') {
+    e.preventDefault()
+    navigator.clipboard?.writeText('')
+    return
+  }
+}
 
 // Colors na KITA sa BOTH light at dark mode
 const getSparkleColor = (isDark) => {
@@ -195,6 +228,12 @@ onMounted(() => {
   
   // Disable right-click context menu
   document.addEventListener('contextmenu', disableContextMenu)
+
+  // Disable text selection
+  document.addEventListener('selectstart', disableSelection)
+
+  // Disable copy/save/print/devtools shortcuts
+  document.addEventListener('keydown', disableShortcuts)
   
   // Watch for theme changes
   const observer = new MutationObserver(() => {
@@ -220,6 +259,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (animationFrame) cancelAnimationFrame(animationFrame)
   document.removeEventListener('contextmenu', disableContextMenu)
+  document.removeEventListener('selectstart', disableSelection)
+  document.removeEventListener('keydown', disableShortcuts)
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
 })
 </script>
