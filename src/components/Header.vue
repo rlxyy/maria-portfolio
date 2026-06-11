@@ -1,13 +1,13 @@
 <template>
-  <header class="fixed top-0 z-30 w-full border-b border-border-color bg-bg-main/95 backdrop-blur-md">
-    <nav class="section-shell flex min-h-16 items-center justify-between gap-4">
-      <a href="#" class="flex items-center gap-2 text-sm font-semibold text-text-primary">
-        <SparklesIcon class="h-5 w-5 text-accent" aria-hidden="true" />
+  <header class="fixed top-0 z-30 w-full border-b border-white/20 bg-white/30 backdrop-blur-md dark:border-gray-800/50 dark:bg-gray-900/30">
+    <nav class="section-shell mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <a href="#" class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+        <SparklesIcon class="h-5 w-5 text-pink-500 dark:text-pink-400" aria-hidden="true" />
         rlxy
       </a>
       
       <div class="flex items-center gap-6">
-        <div class="hidden items-center gap-6 text-sm text-text-primary/70 sm:flex">
+        <div class="hidden items-center gap-6 text-sm sm:flex">
           <a
             v-for="item in navItems"
             :key="item.href"
@@ -22,11 +22,11 @@
         
         <button
           @click="toggleTheme"
-          class="rounded-full p-2 transition-all duration-300 hover:scale-110 hover:bg-accent/20 hover:ring-2 hover:ring-accent/40"
+          class="rounded-full p-2 transition-all duration-300 hover:scale-110 hover:bg-pink-500/20 hover:ring-2 hover:ring-pink-500/40"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
         >
-          <SunIcon v-if="isDark" class="h-5 w-5 text-accent" />
-          <MoonIcon v-else class="h-5 w-5 text-text-primary" />
+          <SunIcon v-if="isDark" class="h-5 w-5 text-pink-500 dark:text-pink-400" />
+          <MoonIcon v-else class="h-5 w-5 text-gray-900 dark:text-white" />
         </button>
       </div>
     </nav>
@@ -90,25 +90,31 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ========== NO @apply, pure CSS ========== */
+/* GLASSMORPHISM + PINK INDICATOR */
 .nav-link {
-  color: rgba(var(--text-primary-rgb, 0, 0, 0), 0.7);
+  color: rgba(0, 0, 0, 0.7);
   padding-bottom: 4px;
   position: relative;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
   text-decoration: none;
+  font-weight: 500;
+}
+
+.dark .nav-link {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .nav-link:hover {
-  color: var(--accent, #ec4899);
+  color: #ec4899; /* PINK */
 }
 
-/* Active link - pink */
+/* Active link - PINK */
 .nav-link.active {
-  color: var(--accent, #ec4899);
+  color: #ec4899; /* PINK */
+  font-weight: 500;
 }
 
-/* Bottom border indicator - PINK */
+/* Bottom border indicator - PINK with glow (glassmorphism effect) */
 .nav-link.active::after {
   content: '';
   position: absolute;
@@ -116,12 +122,13 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: var(--accent, #ec4899);
+  background: linear-gradient(90deg, #ec4899, #f472b6, #ec4899);
   border-radius: 2px;
   animation: slideIn 0.2s ease-out;
+  box-shadow: 0 0 8px rgba(236, 72, 153, 0.5);
 }
 
-/* Hover effect - PINK */
+/* Hover effect - PINK with glow */
 .nav-link::before {
   content: '';
   position: absolute;
@@ -129,10 +136,11 @@ onUnmounted(() => {
   left: 0;
   width: 0;
   height: 2px;
-  background-color: var(--accent, #ec4899);
+  background: linear-gradient(90deg, #ec4899, #f472b6, #ec4899);
   border-radius: 2px;
   transition: width 0.2s ease-out;
-  opacity: 0.5;
+  opacity: 0.6;
+  box-shadow: 0 0 4px rgba(236, 72, 153, 0.3);
 }
 
 .nav-link:hover::before {
