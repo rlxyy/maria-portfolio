@@ -12,28 +12,36 @@
         class="group relative fade-up"
         @dblclick="expandImage(cert)"
       >
-        <GlassCard class="relative transition-all duration-300 group-hover:scale-105 group-hover:border-accent-primary/50 group-hover:shadow-xl group-hover:shadow-accent-primary/10">
-          <ShieldCheckIcon class="h-8 w-8 text-accent-primary" aria-hidden="true" />
-          <h3 class="mt-4 min-h-14 text-lg font-black text-light-text dark:text-dark-text">{{ cert.name }}</h3>
-          <p class="mt-3 text-sm font-semibold text-accent-primary">{{ cert.year }}</p>
+        <GlassCard class="relative min-h-[280px] cursor-pointer transition-all duration-300 group-hover:scale-105 group-hover:border-accent-primary/50 group-hover:shadow-xl group-hover:shadow-accent-primary/10">
           
-          <!-- Hover preview - kita agad ang certificate -->
-          <div class="absolute left-1/2 top-full z-20 mt-2 hidden w-80 -translate-x-1/2 rounded-xl bg-light-bg dark:bg-dark-bg shadow-2xl border border-accent-primary/20 group-hover:block">
-            <div class="p-3">
-              <img
-                v-if="cert.image"
-                :src="cert.image"
-                :alt="cert.name"
-                class="w-full h-52 object-cover rounded-lg shadow-md"
-              />
-              <div v-else class="h-52 w-full rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <ShieldCheckIcon class="h-12 w-12 text-gray-400" />
-              </div>
-              <p class="mt-2 text-center text-xs text-light-text/60 dark:text-dark-text/60">
-                ✨ Double click to expand ✨
-              </p>
+          <!-- Normal state (text) - nagha-hide kapag hover -->
+          <div class="absolute inset-0 flex flex-col items-start justify-between p-6 transition-opacity duration-300 group-hover:opacity-0">
+            <ShieldCheckIcon class="h-8 w-8 text-accent-primary" aria-hidden="true" />
+            <div>
+              <h3 class="mt-4 min-h-14 text-lg font-black text-light-text dark:text-dark-text">{{ cert.name }}</h3>
+              <p class="mt-3 text-sm font-semibold text-accent-primary">{{ cert.year }}</p>
             </div>
           </div>
+          
+          <!-- Hover state (certificate image) - lumalabas kapag hover -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-light-bg dark:bg-dark-bg p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <img
+              v-if="cert.image"
+              :src="cert.image"
+              :alt="cert.name"
+              class="h-full w-full object-contain rounded-lg"
+            />
+            <div v-else class="h-full w-full flex items-center justify-center">
+              <div class="text-center">
+                <ShieldCheckIcon class="h-12 w-12 text-gray-400 mx-auto" />
+                <p class="text-xs text-gray-400 mt-2">No preview available</p>
+              </div>
+            </div>
+            <p class="absolute bottom-2 text-[10px] text-light-text/40 dark:text-dark-text/40">
+              Double click to expand
+            </p>
+          </div>
+          
         </GlassCard>
       </div>
     </div>
