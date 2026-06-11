@@ -9,39 +9,50 @@
       <div
         v-for="cert in certifications"
         :key="cert.name"
-        class="group relative fade-up"
+        class="fade-up"
         @dblclick="expandImage(cert)"
       >
-        <GlassCard class="relative min-h-[280px] cursor-pointer transition-all duration-300 group-hover:scale-105 group-hover:border-accent-primary/50 group-hover:shadow-xl group-hover:shadow-accent-primary/10">
-          
-          <!-- Normal state (text) - nagha-hide kapag hover -->
-          <div class="absolute inset-0 flex flex-col items-start justify-between p-6 transition-opacity duration-300 group-hover:opacity-0">
+        <!-- Normal state (text) -->
+        <GlassCard 
+          class="relative min-h-[280px] cursor-pointer transition-all duration-300 hover:scale-105 hover:border-accent-primary/50 hover:shadow-xl hover:shadow-accent-primary/10"
+          :class="{ 'hidden-card': hoveredCert === cert.name }"
+          @mouseenter="hoveredCert = cert.name"
+          @mouseleave="hoveredCert = null"
+        >
+          <div class="flex flex-col items-start justify-between h-full">
             <ShieldCheckIcon class="h-8 w-8 text-accent-primary" aria-hidden="true" />
             <div>
               <h3 class="mt-4 min-h-14 text-lg font-black text-light-text dark:text-dark-text">{{ cert.name }}</h3>
               <p class="mt-3 text-sm font-semibold text-accent-primary">{{ cert.year }}</p>
             </div>
           </div>
-          
-          <!-- Hover state (certificate image) - lumalabas kapag hover -->
-          <div class="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-light-bg dark:bg-dark-bg p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        </GlassCard>
+
+        <!-- Hover state (certificate image) - same position, kapalit ng text card -->
+        <GlassCard 
+          v-if="hoveredCert === cert.name"
+          class="relative min-h-[280px] cursor-pointer transition-all duration-300 scale-105 border-accent-primary/50 shadow-xl shadow-accent-primary/10"
+          @mouseenter="hoveredCert = cert.name"
+          @mouseleave="hoveredCert = null"
+          @dblclick="expandImage(cert)"
+        >
+          <div class="flex flex-col items-center justify-center h-full p-4">
             <img
               v-if="cert.image"
               :src="cert.image"
               :alt="cert.name"
-              class="h-full w-full object-contain rounded-lg"
+              class="max-h-[200px] w-full object-contain rounded-lg"
             />
-            <div v-else class="h-full w-full flex items-center justify-center">
+            <div v-else class="h-[200px] w-full flex items-center justify-center">
               <div class="text-center">
                 <ShieldCheckIcon class="h-12 w-12 text-gray-400 mx-auto" />
                 <p class="text-xs text-gray-400 mt-2">No preview available</p>
               </div>
             </div>
-            <p class="absolute bottom-2 text-[10px] text-light-text/40 dark:text-dark-text/40">
-              Double click to expand
+            <p class="mt-2 text-[10px] text-light-text/40 dark:text-dark-text/40">
+              ✨ Double click to expand ✨
             </p>
           </div>
-          
         </GlassCard>
       </div>
     </div>
@@ -78,6 +89,9 @@
 import { ref } from 'vue'
 import GlassCard from './GlassCard.vue'
 import { ShieldCheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+
+const hoveredCert = ref(null)
+const expandedCert = ref(null)
 
 const certifications = ref([
   {
@@ -117,8 +131,6 @@ const certifications = ref([
     image: '/certificates/cisco-cybersecurity-intro.jpg'
   }
 ])
-
-const expandedCert = ref(null)
 
 const expandImage = (cert) => {
   if (cert.image) {
