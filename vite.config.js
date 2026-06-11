@@ -3,5 +3,5 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/maria-portfolio/',  // ← IMPORTANTE: pangalan ng repository mo
+  base: '/maria-portfolio/',  // ← IMPORTANTE: ito ang repository name mo
 })
