@@ -15,7 +15,6 @@
         <!-- Normal state (text) -->
         <GlassCard 
           class="relative min-h-[280px] cursor-pointer transition-all duration-300 hover:scale-105 hover:border-accent-primary/50 hover:shadow-xl hover:shadow-accent-primary/10"
-          :class="{ 'hidden-card': hoveredCert === cert.name }"
           @mouseenter="hoveredCert = cert.name"
           @mouseleave="hoveredCert = null"
         >
@@ -28,43 +27,43 @@
           </div>
         </GlassCard>
 
-        <!-- Hover state (certificate image) - same position, kapalit ng text card -->
-        <GlassCard 
+        <!-- Hover state (certificate image) -->
+        <div 
           v-if="hoveredCert === cert.name"
-          class="relative min-h-[280px] cursor-pointer transition-all duration-300 scale-105 border-accent-primary/50 shadow-xl shadow-accent-primary/10"
-          @mouseenter="hoveredCert = cert.name"
-          @mouseleave="hoveredCert = null"
-          @dblclick="expandImage(cert)"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md transition-all duration-300"
+          @click="hoveredCert = null"
         >
-          <div class="flex flex-col items-center justify-center h-full p-4">
+          <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
             <img
-              v-if="cert.image"
               :src="cert.image"
               :alt="cert.name"
-              class="max-h-[200px] w-full object-contain rounded-lg"
+              class="max-h-[85vh] max-w-[90vw] object-contain rounded-2xl shadow-2xl"
             />
-            <div v-else class="h-[200px] w-full flex items-center justify-center">
-              <div class="text-center">
-                <ShieldCheckIcon class="h-12 w-12 text-gray-400 mx-auto" />
-                <p class="text-xs text-gray-400 mt-2">No preview available</p>
-              </div>
+            <button
+              @click="hoveredCert = null"
+              class="absolute -top-12 right-0 rounded-full bg-red-500/20 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
+            >
+              <XMarkIcon class="h-6 w-6" />
+            </button>
+            <div class="absolute -bottom-12 left-0 text-white text-sm bg-black/50 px-3 py-1 rounded-lg">
+              {{ cert.name }} • {{ cert.year }}
             </div>
-            <p class="mt-2 text-[10px] text-light-text/40 dark:text-dark-text/40">
-              ✨ Double click to expand ✨
+            <p class="absolute top-4 right-4 text-white text-xs bg-black/50 px-2 py-1 rounded">
+              ✨ Double click to expand fullscreen ✨
             </p>
           </div>
-        </GlassCard>
+        </div>
       </div>
     </div>
 
-    <!-- Expanded view (double click) - full screen -->
+    <!-- Fullscreen expanded view (double click) -->
     <Teleport to="body">
       <div
         v-if="expandedCert"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md transition-all duration-300"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md transition-all duration-300"
         @click="expandedCert = null"
       >
-        <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
+        <div class="relative max-h-[95vh] max-w-[95vw]" @click.stop>
           <img
             :src="expandedCert.image"
             :alt="expandedCert.name"
@@ -98,44 +97,36 @@ const certifications = ref([
     name: 'Google Workspace Administrator Professional Certificate',
     year: '2026',
     issuer: 'Google',
-    image: '/certificates/google-workspace.jpg'
+    image: '/certificates/google-workspace.jpeg'
   },
   {
     name: 'Microsoft Cybersecurity: Security, Compliance, Identity',
     year: '2026',
     issuer: 'Microsoft',
-    image: '/certificates/Microsoft.jpg'
+    image: '/certificates/microsoft-cybersecurity.jpeg'
   },
   {
     name: 'Network Security - Cisco',
     year: '2026',
     issuer: 'Cisco',
-    image: '/certificates/Network Security.jpg'
+    image: '/certificates/cisco-network-security.jpeg'
   },
   {
     name: 'Linux Essentials - Cisco',
     year: '2026',
     issuer: 'Cisco',
-    image: '/certificates/Linux.jpg'
+    image: '/certificates/cisco-linux-essentials.jpeg'
   },
   {
     name: 'Operating Systems Basics - Cisco',
     year: '2025',
     issuer: 'Cisco',
-    image: '/certificates/cisco-os-basics.jpg'
-  },
-  {
-    name: 'Intro to Cybersecurity - Cisco',
-    year: '2025',
-    issuer: 'Cisco',
-    image: '/certificates/cisco-cybersecurity-intro.jpg'
+    image: '/certificates/cisco-os-basics.jpeg'
   }
 ])
 
 const expandImage = (cert) => {
-  if (cert.image) {
-    expandedCert.value = cert
-  }
+  expandedCert.value = cert
 }
 </script>
 
