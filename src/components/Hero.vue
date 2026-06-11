@@ -1,9 +1,9 @@
-<template>
+﻿<template>
   <section class="section-shell grid min-h-[calc(100vh-4rem)] items-center gap-10 py-16 lg:grid-cols-[1.1fr_.9fr] lg:py-20">
     <div class="fade-up">
       <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-border-color bg-bg-card/80 px-4 py-2 text-sm font-medium text-text-primary/70 backdrop-blur-sm">
         <SparklesIcon class="h-4 w-4 text-accent" aria-hidden="true" />
-        Organized · Detail-oriented · Tech-savvy
+        Organized Â· Detail-oriented Â· Tech-savvy
       </p>
       <h1 class="max-w-3xl text-5xl font-black leading-tight text-text-primary sm:text-6xl lg:text-7xl">
         Maria Alffin A. Andrade
@@ -34,7 +34,7 @@
         <!-- Profile photo replacing UserCircleIcon placeholder -->
         <div class="mx-auto h-56 w-56 overflow-hidden rounded-full border-2 border-accent/20 bg-gradient-to-br from-accent/10 to-accent/5">
           <img
-            src="../assets/profile_nobg.png"
+            :src="profileImg"
             alt="Maria Alffin A. Andrade"
             class="h-full w-full object-cover object-[center_15%]"
           />
@@ -59,6 +59,7 @@
 
 <script setup>
 import GlassCard from './GlassCard.vue'
+import profileImg from '../assets/profile_nobg.webp'
 import { SparklesIcon, EnvelopeIcon, LinkIcon, PhoneIcon, CodeBracketIcon, GlobeAltIcon, ShieldCheckIcon } from '@heroicons/vue/24/outline'
 
 const contacts = [
