@@ -9,15 +9,16 @@
       <div
         v-for="cert in certifications"
         :key="cert.name"
-        class="group fade-up"
+        class="fade-up"
+        @mouseenter="showPreview(cert)"
+        @mouseleave="hidePreview"
+        @dblclick="expandImage(cert)"
       >
+        <!-- Normal Card - text lang -->
         <GlassCard 
-          class="relative min-h-[280px] cursor-pointer transition-all duration-300 hover:scale-105 hover:border-accent-primary/50 hover:shadow-xl hover:shadow-accent-primary/10"
-          @mouseenter="showPreview(cert)"
-          @mouseleave="hidePreview"
-          @dblclick="expandImage(cert)"
+          v-if="currentPreview !== cert.name"
+          class="min-h-[280px] cursor-pointer transition-all duration-300 hover:scale-105 hover:border-accent-primary/50 hover:shadow-xl hover:shadow-accent-primary/10"
         >
-          <!-- Normal state -->
           <div class="flex flex-col items-start justify-between h-full">
             <ShieldCheckIcon class="h-8 w-8 text-accent-primary" aria-hidden="true" />
             <div>
@@ -26,46 +27,34 @@
             </div>
           </div>
         </GlassCard>
+
+        <!-- Hover Card - certificate image (kapalit ng text card, same size) -->
+        <GlassCard 
+          v-else
+          class="min-h-[280px] cursor-pointer transition-all duration-300 scale-105 border-accent-primary/50 shadow-xl shadow-accent-primary/10"
+        >
+          <div class="flex flex-col items-center justify-center h-full p-4">
+            <img
+              :src="cert.image"
+              :alt="cert.name"
+              class="w-full h-full max-h-[200px] object-contain rounded-lg"
+            />
+            <p class="mt-3 text-[10px] text-light-text/50 dark:text-dark-text/50 text-center">
+              ✨ Double click to expand ✨
+            </p>
+          </div>
+        </GlassCard>
       </div>
     </div>
 
-    <!-- Hover Preview Modal -->
-    <Teleport to="body">
-      <div
-        v-if="previewCert"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md transition-all duration-300"
-        @click="previewCert = null"
-      >
-        <div class="relative max-h-[85vh] max-w-[85vw]" @click.stop>
-          <img
-            :src="previewCert.image"
-            :alt="previewCert.name"
-            class="max-h-[80vh] max-w-[80vw] object-contain rounded-2xl shadow-2xl"
-          />
-          <button
-            @click="previewCert = null"
-            class="absolute -top-12 right-0 rounded-full bg-red-500/20 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
-          >
-            ✕
-          </button>
-          <div class="absolute -bottom-12 left-0 text-white text-sm bg-black/50 px-3 py-1 rounded-lg">
-            {{ previewCert.name }} • {{ previewCert.year }}
-          </div>
-          <p class="absolute top-4 right-4 text-white text-xs bg-black/50 px-2 py-1 rounded">
-            Double click to expand
-          </p>
-        </div>
-      </div>
-    </Teleport>
-
-    <!-- Fullscreen Expand -->
+    <!-- Expanded fullscreen on double click -->
     <Teleport to="body">
       <div
         v-if="expandedCert"
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md"
         @click="expandedCert = null"
       >
-        <div class="relative max-h-[95vh] max-w-[95vw]" @click.stop>
+        <div class="relative max-h-[90vh] max-w-[90vw]" @click.stop>
           <img
             :src="expandedCert.image"
             :alt="expandedCert.name"
@@ -73,7 +62,7 @@
           />
           <button
             @click="expandedCert = null"
-            class="absolute -top-12 right-0 rounded-full bg-red-500/20 p-2 text-red-500 transition hover:bg-red-500 hover:text-white"
+            class="absolute -top-12 right-0 rounded-full bg-red-500/20 p-2 text-red-500 text-xl transition hover:bg-red-500 hover:text-white"
           >
             ✕
           </button>
@@ -91,7 +80,7 @@ import { ref } from 'vue'
 import GlassCard from './GlassCard.vue'
 import { ShieldCheckIcon } from '@heroicons/vue/24/outline'
 
-const previewCert = ref(null)
+const currentPreview = ref(null)
 const expandedCert = ref(null)
 
 const certifications = ref([
@@ -128,15 +117,14 @@ const certifications = ref([
 ])
 
 const showPreview = (cert) => {
-  previewCert.value = cert
+  currentPreview.value = cert.name
 }
 
 const hidePreview = () => {
-  previewCert.value = null
+  currentPreview.value = null
 }
 
 const expandImage = (cert) => {
-  previewCert.value = null
   expandedCert.value = cert
 }
 </script>
