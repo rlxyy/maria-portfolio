@@ -3,7 +3,7 @@
     <nav class="section-shell flex min-h-16 items-center justify-between gap-4">
       <a href="#" class="flex items-center gap-2 text-sm font-semibold text-text-primary">
         <SparklesIcon class="h-5 w-5 text-accent" aria-hidden="true" />
-        Maria Andrade
+        rlxy
       </a>
       
       <div class="flex items-center gap-6">
