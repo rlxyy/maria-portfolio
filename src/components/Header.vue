@@ -1,13 +1,13 @@
 <template>
-  <header class="fixed top-0 z-30 w-full border-b border-border-color bg-bg-main/95 backdrop-blur-md">
-    <nav class="section-shell flex min-h-16 items-center justify-between gap-4">
-      <a href="#" class="flex items-center gap-2 text-sm font-semibold text-text-primary">
-        <SparklesIcon class="h-5 w-5 text-accent" aria-hidden="true" />
+  <header class="fixed top-0 z-30 w-full border-b border-gray-200 bg-white/95 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/95">
+    <nav class="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <a href="#" class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-white">
+        <SparklesIcon class="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
         rlxy
       </a>
       
       <div class="flex items-center gap-6">
-        <div class="hidden items-center gap-6 text-sm text-text-primary/70 sm:flex">
+        <div class="hidden items-center gap-6 text-sm sm:flex">
           <a
             v-for="item in navItems"
             :key="item.href"
@@ -22,11 +22,11 @@
         
         <button
           @click="toggleTheme"
-          class="rounded-full p-2 transition-all duration-300 hover:scale-110 hover:bg-accent/20 hover:ring-2 hover:ring-accent/40"
+          class="rounded-full p-2 transition-all duration-300 hover:scale-110 hover:bg-blue-600/20 hover:ring-2 hover:ring-blue-600/40"
           :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
         >
-          <SunIcon v-if="isDark" class="h-5 w-5 text-accent" />
-          <MoonIcon v-else class="h-5 w-5 text-text-primary" />
+          <SunIcon v-if="isDark" class="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <MoonIcon v-else class="h-5 w-5 text-gray-900 dark:text-white" />
         </button>
       </div>
     </nav>
@@ -53,7 +53,7 @@ const navItems = [
 const scrollToSection = (href) => {
   const element = document.querySelector(href)
   if (element) {
-    const offset = 80 // header height + padding
+    const offset = 80
     const elementPosition = element.getBoundingClientRect().top + window.scrollY
     window.scrollTo({
       top: elementPosition - offset,
@@ -63,7 +63,7 @@ const scrollToSection = (href) => {
 }
 
 const updateActiveSection = () => {
-  const scrollPosition = window.scrollY + 100 // offset para sa header
+  const scrollPosition = window.scrollY + 100
   
   for (const item of navItems) {
     const section = document.querySelector(item.href)
@@ -81,7 +81,7 @@ const updateActiveSection = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', updateActiveSection)
-  updateActiveSection() // initial check
+  updateActiveSection()
 })
 
 onUnmounted(() => {
@@ -91,13 +91,12 @@ onUnmounted(() => {
 
 <style scoped>
 .nav-link {
-  @apply text-text-primary/70 hover:text-accent;
+  @apply text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400;
   padding-bottom: 4px;
 }
 
-/* Active indicator: bottom border + accent color */
 .nav-link.active {
-  @apply text-accent;
+  @apply text-blue-600 dark:text-blue-400;
 }
 
 .nav-link.active::after {
@@ -112,7 +111,6 @@ onUnmounted(() => {
   animation: slideIn 0.2s ease-out;
 }
 
-/* Hover underline effect (optional, hindi nakikipag-collide sa active) */
 .nav-link::before {
   content: '';
   position: absolute;
@@ -129,7 +127,6 @@ onUnmounted(() => {
   width: 100%;
 }
 
-/* Para hindi mag-overlap ang hover at active indicators */
 .nav-link.active:hover::before {
   width: 0;
 }
